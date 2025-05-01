@@ -1,23 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3DShop</title>
+
+  <!-- Favicon: แสดงไอคอนที่แท็บเบราว์เซอร์ -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
   <style>
+    /* กำหนดให้ body และ html ไม่มีขอบและเต็มหน้าจอ */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
     }
+
+    /* ปรับขนาด iframe ให้กินทั้งหน้าจอ */
     iframe {
       width: 100%;
-      height: 100vh; /* เต็มจอแนวตั้ง */
+      height: 100vh;
       border: none;
+      display: block;
     }
   </style>
 </head>
 <body>
+  <!-- ฝังหน้า Web App ของ Google Apps Script -->
   <iframe src="https://script.google.com/macros/s/AKfycbxb2bhyUVMp5TomRPmmIykLIim5fuR8uRh3DZJmnHEHn9N08ONSuxetrw1cnjembLU/exec"></iframe>
 </body>
 </html>
