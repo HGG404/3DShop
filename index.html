@@ -13,9 +13,9 @@
 
   <style>
     body {
-      background: linear-gradient(135deg, #0f0f0f, #1c2526, #2a2a2a, #1c2526, #0f0f0f);
-      background-size: 300% 300%;
-      animation: gradientFlow 12s ease infinite;
+      background: linear-gradient(135deg, #0a1128, #1e293b, #334155);
+      background-size: 200% 200%;
+      animation: gradientFlow 15s ease infinite;
       overflow: hidden;
     }
 
@@ -27,32 +27,32 @@
 
     .countdown-digit {
       display: inline-block;
-      background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(218, 165, 32, 0.1));
-      border: 1px solid rgba(255, 215, 0, 0.4);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(203, 213, 225, 0.2);
+      border-radius: 10px;
       padding: 12px 24px;
       margin: 0 8px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255, 215, 0, 0.3);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.1);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .countdown-digit:hover {
-      transform: scale(1.1) translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.6);
+      transform: scale(1.05) translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(203, 213, 225, 0.3);
     }
 
     .glow-text {
-      text-shadow: 0 0 12px rgba(255, 215, 0, 0.8), 0 0 24px rgba(218, 165, 32, 0.5);
+      text-shadow: 0 0 8px rgba(203, 213, 225, 0.6), 0 0 16px rgba(59, 130, 246, 0.3);
     }
 
     .pulse {
-      animation: pulse 2.2s infinite;
+      animation: pulse 2.5s infinite;
     }
 
     @keyframes pulse {
       0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      50% { transform: scale(1.03); }
       100% { transform: scale(1); }
     }
   </style>
@@ -61,28 +61,28 @@
   <div class="maintenance-container text-center p-6 max-w-lg mx-4">
     <h1 class="text-4xl md:text-5xl font-bold mb-6 glow-text pulse">ปิดปรับปรุงชั่วคราว</h1>
     <p class="text-lg md:text-xl mb-8 leading-relaxed">
-      ขออภัยในความไม่สะดวก ขณะนี้ <span class="font-semibold text-yellow-300">3DShop</span> 
+      ขออภัยในความไม่สะดวก ขณะนี้ <span class="font-semibold text-blue-200">3DShop</span> 
       กำลังอยู่ระหว่างการปรับปรุงระบบเพื่อมอบประสบการณ์ที่ดีกว่าให้กับคุณ
     </p>
     <div class="countdown mb-8 flex justify-center space-x-4">
       <div class="countdown-digit">
-        <span id="days" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
-        <div class="text-sm text-yellow-400">วัน</div>
+        <span id="days" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
+        <div class="text-sm text-gray-300">วัน</div>
       </div>
       <div class="countdown-digit">
-        <span id="hours" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
-        <div class="text-sm text-yellow-400">ชั่วโมง</div>
+        <span id="hours" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
+        <div class="text-sm text-gray-300">ชั่วโมง</div>
       </div>
       <div class="countdown-digit">
-        <span id="minutes" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
-        <div class="text-sm text-yellow-400">นาที</div>
+        <span id="minutes" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
+        <div class="text-sm text-gray-300">นาที</div>
       </div>
       <div class="countdown-digit">
-        <span id="seconds" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
-        <div class="text-sm text-yellow-400">วินาที</div>
+        <span id="seconds" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
+        <div class="text-sm text-gray-300">วินาที</div>
       </div>
     </div>
-    <p class="text-base md:text-lg text-gray-300">เราจะกลับมาเร็ว ๆ นี้ กรุณากลับมาใหม่ในภายหลัง!</p>
+    <p class="text-base md:text-lg text-gray-400">เราจะกลับมาเร็ว ๆ นี้ กรุณากลับมาใหม่ในภายหลัง!</p>
   </div>
 
   <script>
@@ -95,7 +95,7 @@
       const diff = endDate - now;
 
       if (diff <= 0) {
-        document.querySelector('.countdown').innerHTML = '<p class="text-xl text-yellow-200">การปรับปรุงเสร็จสิ้นแล้ว! รีเฟรชหน้าเพื่อใช้งาน</p>';
+        document.querySelector('.countdown').innerHTML = '<p class="text-xl text-gray-100">การปรับปรุงเสร็จสิ้นแล้ว! รีเฟรชหน้าเพื่อใช้งาน</p>';
         return;
       }
 
