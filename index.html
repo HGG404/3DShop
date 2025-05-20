@@ -8,47 +8,111 @@
   <!-- Favicon -->
   <link rel="icon" href="3DShop_FolderDownload_Icon.ico" type="image/x-icon">
 
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+    body {
+      background: linear-gradient(135deg, #0f0f0f, #1c2526, #2a2a2a, #1c2526, #0f0f0f);
+      background-size: 300% 300%;
+      animation: gradientFlow 12s ease infinite;
       overflow: hidden;
-      background-color: #111;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
     }
 
-    .maintenance-container {
-      padding: 20px;
-      max-width: 600px;
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
+    .countdown-digit {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(218, 165, 32, 0.1));
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      border-radius: 12px;
+      padding: 12px 24px;
+      margin: 0 8px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6), inset 0 2px 5px rgba(255, 215, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    p {
-      font-size: 1.2em;
-      line-height: 1.5;
+    .countdown-digit:hover {
+      transform: scale(1.1) translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+
+    .glow-text {
+      text-shadow: 0 0 12px rgba(255, 215, 0, 0.8), 0 0 24px rgba(218, 165, 32, 0.5);
+    }
+
+    .pulse {
+      animation: pulse 2.2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
   </style>
 </head>
-<body>
-  <div class="maintenance-container">
-    <h1>ปิดปรับปรุงชั่วคราว</h1>
-    <p>ขออภัยในความไม่สะดวก ขณะนี้ 3DShop กำลังอยู่ระหว่างการปรับปรุงระบบเพื่อมอบประสบการณ์ที่ดีกว่าให้กับคุณ<br>กรุณากลับมาใหม่ในภายหลัง</p>
+<body class="flex items-center justify-center min-h-screen text-white font-sans">
+  <div class="maintenance-container text-center p-6 max-w-lg mx-4">
+    <h1 class="text-4xl md:text-5xl font-bold mb-6 glow-text pulse">ปิดปรับปรุงชั่วคราว</h1>
+    <p class="text-lg md:text-xl mb-8 leading-relaxed">
+      ขออภัยในความไม่สะดวก ขณะนี้ <span class="font-semibold text-yellow-300">3DShop</span> 
+      กำลังอยู่ระหว่างการปรับปรุงระบบเพื่อมอบประสบการณ์ที่ดีกว่าให้กับคุณ
+    </p>
+    <div class="countdown mb-8 flex justify-center space-x-4">
+      <div class="countdown-digit">
+        <span id="days" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
+        <div class="text-sm text-yellow-400">วัน</div>
+      </div>
+      <div class="countdown-digit">
+        <span id="hours" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
+        <div class="text-sm text-yellow-400">ชั่วโมง</div>
+      </div>
+      <div class="countdown-digit">
+        <span id="minutes" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
+        <div class="text-sm text-yellow-400">นาที</div>
+      </div>
+      <div class="countdown-digit">
+        <span id="seconds" class="text-3xl md:text-4xl font-mono text-yellow-200">00</span>
+        <div class="text-sm text-yellow-400">วินาที</div>
+      </div>
+    </div>
+    <p class="text-base md:text-lg text-gray-300">เราจะกลับมาเร็ว ๆ นี้ กรุณากลับมาใหม่ในภายหลัง!</p>
   </div>
+
+  <script>
+    // Set countdown to 2 days from now
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + 2);
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = endDate - now;
+
+      if (diff <= 0) {
+        document.querySelector('.countdown').innerHTML = '<p class="text-xl text-yellow-200">การปรับปรุงเสร็จสิ้นแล้ว! รีเฟรชหน้าเพื่อใช้งาน</p>';
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+
+    // Update every second
+    setInterval(updateCountdown, 1000);
+    updateCountdown(); // Initial call
+  </script>
 </body>
 </html>
-
-
-
-
-
-
