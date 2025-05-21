@@ -1,118 +1,193 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3DShop - ปิดปรับปรุง</title>
-
-  <!-- Favicon -->
-  <link rel="icon" href="3DShop_FolderDownload_Icon.ico" type="image/x-icon">
-
-  <!-- Tailwind CSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <style>
-    body {
-      background: linear-gradient(135deg, #0a1128, #1e293b, #334155);
-      background-size: 200% 200%;
-      animation: gradientFlow 15s ease infinite;
-      overflow: hidden;
-    }
-
-    @keyframes gradientFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .countdown-digit {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(203, 213, 225, 0.2);
-      border-radius: 10px;
-      padding: 12px 24px;
-      margin: 0 8px;
-      backdrop-filter: blur(6px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .countdown-digit:hover {
-      transform: scale(1.05) translateY(-3px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 10px rgba(203, 213, 225, 0.3);
-    }
-
-    .glow-text {
-      text-shadow: 0 0 8px rgba(203, 213, 225, 0.6), 0 0 16px rgba(59, 130, 246, 0.3);
-    }
-
-    .pulse {
-      animation: pulse 2.5s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.03); }
-      100% { transform: scale(1); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3DShop - ไฟล์ดิจิทัลคุณภาพสูง</title>
+    <meta name="description" content="ค้นพบไฟล์ดิจิทัลคุณภาพสูงสำหรับงานออกแบบและโปรเจกต์ของคุณที่ 3DShop">
+    <!-- Font Awesome CDN สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Google Fonts สำหรับฟอนต์ Prompt -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 สำหรับ modal ซูม -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Favicon -->
+    <link rel="icon" href="3DShop_FolderDownload_Icon.ico" type="image/x-icon">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Prompt', 'Arial', sans-serif;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: none;
+        }
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3a8a, #4b5563);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: opacity 0.5s ease-out;
+        }
+        .loader-content {
+            text-align: center;
+            padding: 20px;
+        }
+        .loader-content i {
+            font-size: 24px;
+            color: #d4af37;
+        }
+        .loader-content p {
+            font-size: 14px;
+            color: #fff;
+            margin: 10px 0 0;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+        .loader.error p {
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+        .loader.error i {
+            display: none;
+        }
+        .loader.firefox-warning {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            overflow: auto;
+        }
+        .loader.firefox-warning .loader-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .loader.firefox-warning i {
+            display: block;
+            font-size: 48px;
+            color: #ff4d4d;
+            margin-bottom: 20px;
+        }
+        .loader.firefox-warning p {
+            font-size: 18px;
+            color: #ff4d4d;
+            margin: 0 0 20px;
+            text-shadow: none;
+        }
+        .loader.firefox-warning .browser-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #d4af37;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .loader.firefox-warning .browser-btn:hover {
+            background: #b8972e;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .loader-content p { font-size: 12px; }
+            .loader-content i { font-size: 20px; }
+            .loader.firefox-warning p { font-size: 16px; }
+            .loader.firefox-warning i { font-size: 36px; }
+            .loader.firefox-warning .loader-content { padding: 20px; max-width: 90%; }
+        }
+    </style>
 </head>
-<body class="flex items-center justify-center min-h-screen text-white font-sans">
-  <div class="maintenance-container text-center p-6 max-w-lg mx-4">
-    <h1 class="text-4xl md:text-5xl font-bold mb-6 glow-text pulse">ปิดปรับปรุงชั่วคราว</h1>
-    <p class="text-lg md:text-xl mb-8 leading-relaxed">
-      ขออภัยในความไม่สะดวก ขณะนี้ <span class="font-semibold text-blue-200">3DShop</span> 
-      กำลังอยู่ระหว่างการปรับปรุงระบบเพื่อมอบประสบการณ์ที่ดีกว่าให้กับคุณ
-    </p>
-    <div class="countdown mb-8 flex justify-center space-x-4">
-      <div class="countdown-digit">
-        <span id="days" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
-        <div class="text-sm text-gray-300">วัน</div>
-      </div>
-      <div class="countdown-digit">
-        <span id="hours" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
-        <div class="text-sm text-gray-300">ชั่วโมง</div>
-      </div>
-      <div class="countdown-digit">
-        <span id="minutes" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
-        <div class="text-sm text-gray-300">นาที</div>
-      </div>
-      <div class="countdown-digit">
-        <span id="seconds" class="text-3xl md:text-4xl font-mono text-gray-100">00</span>
-        <div class="text-sm text-gray-300">วินาที</div>
-      </div>
+<body>
+    <div class="loader">
+        <div class="loader-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>กำลังโหลด 3DShop</p>
+        </div>
     </div>
-    <p class="text-base md:text-lg text-gray-400">เราจะกลับมาเร็ว ๆ นี้ กรุณากลับมาใหม่ในภายหลัง!</p>
-  </div>
+    <iframe id="shopIframe" 
+            src="https://script.google.com/macros/s/AKfycbxsQA40qVk004S5TG7zslb4QHatJoMZ3gcqxWoP96WmyJz-VqWAQsLpbveVOs-NaLI/exec" 
+            title="3DShop" 
+            allowfullscreen
+            onload="document.querySelector('.loader').style.opacity='0'; setTimeout(() => document.querySelector('.loader').style.display='none', 500); this.style.display='block'; initializeZoom();"
+            onerror="document.querySelector('.loader').classList.add('error'); document.querySelector('.loader').querySelector('p').textContent='ไม่สามารถโหลด 3DShop ได้ กรุณารีเฟรช';"></iframe>
+    <script>
+        // ตรวจสอบว่าเป็น Firefox หรือไม่
+        function isFirefox() {
+            return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+        }
 
-  <script>
-    // Set countdown to 2 days from now
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + 2);
+        // เริ่มต้นการซูมสำหรับภาพใน iframe
+        function initializeZoom() {
+            const iframe = document.getElementById('shopIframe');
+            if (!iframe || !iframe.contentDocument) return;
 
-    function updateCountdown() {
-      const now = new Date();
-      const diff = endDate - now;
+            const images = iframe.contentDocument.querySelectorAll('img');
+            images.forEach(img => {
+                // เพิ่ม cursor เพื่อบ่งบอกว่าซูมได้
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', (e) => {
+                    // ป้องกันการเรียก fullscreen หรือการซูมแบบเดิม
+                    e.preventDefault();
+                    e.stopPropagation();
+                    Swal.fire({
+                        title: 'ภาพสินค้า',
+                        html: `
+                            <img src="${img.src}" style="max-width:100%; max-height:80vh; border-radius:12px;" />
+                        `,
+                        background: '#1f2937',
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        customClass: { popup: 'rounded-4 shadow-lg' }
+                    });
+                });
+            });
 
-      if (diff <= 0) {
-        document.querySelector('.countdown').innerHTML = '<p class="text-xl text-gray-100">การปรับปรุงเสร็จสิ้นแล้ว! รีเฟรชหน้าเพื่อใช้งาน</p>';
-        return;
-      }
+            // ปิดการใช้งาน requestFullscreen ใน iframe
+            const originalRequestFullscreen = iframe.contentDocument.documentElement.requestFullscreen;
+            iframe.contentDocument.documentElement.requestFullscreen = function() {
+                console.warn('requestFullscreen ถูกปิดการใช้งานใน iframe');
+                return Promise.reject(new Error('Fullscreen is disabled in this context'));
+            };
+        }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-      document.getElementById('days').textContent = String(days).padStart(2, '0');
-      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-    }
-
-    // Update every second
-    setInterval(updateCountdown, 1000);
-    updateCountdown(); // Initial call
-  </script>
+        // ถ้าเป็น Firefox แสดงข้อความแจ้งเตือนและหยุดการโหลด
+        if (isFirefox()) {
+            const loader = document.querySelector('.loader');
+            loader.classList.add('firefox-warning');
+            loader.querySelector('.loader-content').innerHTML = `
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>ขออภัย 3DShop ไม่รองรับเบราว์เซอร์ Firefox</p>
+                <p style="color: #fff; font-size: 14px;">กรุณาใช้ Google Chrome, Safari หรือ Microsoft Edge</p>
+                <a href="https://www.google.com/chrome/" class="browser-btn">ดาวน์โหลด Chrome</a>
+            `;
+            const iframe = document.getElementById('shopIframe');
+            iframe.parentNode.removeChild(iframe);
+        } else {
+            setTimeout(() => {
+                const loader = document.querySelector('.loader');
+                if (loader.style.display !== 'none') {
+                    loader.classList.add('error');
+                    loader.querySelector('p').textContent = 'การโหลดช้าเกินไป กรุณารีเฟรช';
+                }
+            }, 10000);
+        }
+    </script>
 </body>
 </html>
