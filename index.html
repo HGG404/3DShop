@@ -56,46 +56,50 @@
             }
         })();
 
-        // Check if browser is Firefox
-        function isFirefox() {
-            return navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-        }
-
         // Initialize zoom for images in iframe
         function initializeZoom() {
             const iframe = document.getElementById('shopIframe');
-            if (!iframe || !iframe.contentDocument) return;
+            
+            // ใช้ try-catch เพื่อป้องกัน Cross-Origin Error
+            try {
+                // หมายเหตุ: การเข้าถึง contentDocument จะทำได้ก็ต่อเมื่อ Iframe อยู่บนโดเมนเดียวกัน (Same Origin)
+                // หาก Google Apps Script บล็อกการเข้าถึง ส่วนนี้จะถูกข้ามไปโดยไม่ทำให้เว็บพัง
+                if (!iframe || !iframe.contentDocument) return;
 
-            const images = iframe.contentDocument.querySelectorAll('img');
-            images.forEach(img => {
-                img.style.cursor = 'zoom-in';
-                img.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    Swal.fire({
-                        title: 'ภาพสินค้า',
-                        html: `
-                            <img src="${img.src}" style="max-width:100%; max-height:80vh; border-radius:12px;" />
-                        `,
-                        background: '#1f2937',
-                        showConfirmButton: false,
-                        showCloseButton: true,
-                        customClass: { popup: 'rounded-4 shadow-lg' }
+                const images = iframe.contentDocument.querySelectorAll('img');
+                images.forEach(img => {
+                    img.style.cursor = 'zoom-in';
+                    img.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        Swal.fire({
+                            title: 'ภาพสินค้า',
+                            html: `
+                                <img src="${img.src}" style="max-width:100%; max-height:80vh; border-radius:12px;" />
+                            `,
+                            background: '#1f2937',
+                            showConfirmButton: false,
+                            showCloseButton: true,
+                            customClass: { popup: 'rounded-4 shadow-lg' }
+                        });
                     });
                 });
-            });
 
-            const originalRequestFullscreen = iframe.contentDocument.documentElement.requestFullscreen;
-            iframe.contentDocument.documentElement.requestFullscreen = function() {
-                console.warn('requestFullscreen ถูกปิดการใช้งานใน iframe');
-                return Promise.reject(new Error('Fullscreen is disabled in this context'));
-            };
+                const originalRequestFullscreen = iframe.contentDocument.documentElement.requestFullscreen;
+                iframe.contentDocument.documentElement.requestFullscreen = function() {
+                    console.warn('requestFullscreen ถูกปิดการใช้งานใน iframe');
+                    return Promise.reject(new Error('Fullscreen is disabled in this context'));
+                };
+            } catch (error) {
+                console.warn('ไม่สามารถเข้าถึงเนื้อหาใน Iframe ได้เนื่องจากนโยบายความปลอดภัย (Cross-Origin):', error);
+            }
         }
 
         // Handle iframe load
         function onIframeLoad() {
             console.log('Iframe loaded successfully');
-            initializeZoom();
+            // รอเล็กน้อยเพื่อให้ DOM ภายใน Iframe โหลดเสร็จสมบูรณ์ (ถ้าเข้าถึงได้)
+            setTimeout(initializeZoom, 1000);
         }
 
         // Handle iframe load error
@@ -123,21 +127,7 @@
             }
         });
 
-        // If Firefox, show warning and remove iframe
-        if (isFirefox()) {
-            document.body.innerHTML = `
-                <div style="height: 100%; background: linear-gradient(135deg, #2c3e50, #1a252f); display: flex; justify-content: center; align-items: center;">
-                    <div style="background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 30px; max-width: 600px; text-align: center; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #ff4d4d; margin-bottom: 20px;"></i>
-                        <p style="font-size: 18px; color: #ff4d4d; margin: 0 0 20px;">ขออภัย 3DShop ไม่รองรับเบราว์เซอร์ Firefox</p>
-                        <p style="font-size: 14px; color: #fff;">กรุณาใช้ Google Chrome, Safari หรือ Microsoft Edge</p>
-                        <a href="https://www.google.com/chrome/" style="display: inline-block; padding: 10px 20px; background: #d4af37; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">ดาวน์โหลด Chrome</a>
-                    </div>
-                </div>
-            `;
-            const iframe = document.getElementById('shopIframe');
-            iframe.parentNode.removeChild(iframe);
-        }
+        // ส่วนที่บล็อก Firefox ถูกลบออกแล้ว
     </script>
 </body>
 </html>
